@@ -6,9 +6,7 @@ import type { PhotoWithParticipant } from '@/types';
 
 interface PhotoGridProps {
   photos: PhotoWithParticipant[];
-  /** Set of photo IDs highlighted as winners (handles ties) */
   winnerIds?: Set<string>;
-  /** Map of participantId → individual theme text (for individual-theme challenges) */
   themeByParticipant?: Map<string, string>;
 }
 
@@ -16,21 +14,24 @@ export function PhotoGrid({ photos, winnerIds, themeByParticipant }: PhotoGridPr
   if (photos.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl bg-gray-50 py-12 text-gray-400">
-        <p className="text-sm">Aucune photo soumise pour ce défi.</p>
+        <p className="text-sm">Aucune photo soumise pour ce defi.</p>
       </div>
     );
   }
 
   return (
     <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-      {photos.map((photo) => (
-        <PhotoCard
-          key={photo.id}
-          photo={photo}
-          isWinner={winnerIds?.has(photo.id) ?? false}
-          individualTheme={themeByParticipant?.get(photo.participant_id)}
-        />
-      ))}
+      {photos.map((photo) => {
+        const individualTheme = themeByParticipant?.get(photo.participant_id);
+        return (
+          <PhotoCard
+            key={photo.id}
+            photo={photo}
+            isWinner={winnerIds?.has(photo.id) ?? false}
+            {...(individualTheme ? { individualTheme } : {})}
+          />
+        );
+      })}
     </div>
   );
 }
@@ -63,7 +64,6 @@ function PhotoCard({
           </div>
         )}
 
-        {/* Overlay */}
         <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-2">
           <div className="flex items-center justify-between gap-1">
             <div className="flex items-center gap-1.5">
@@ -78,7 +78,7 @@ function PhotoCard({
             </div>
             {photo.votes_count > 0 && (
               <span className="text-xs font-semibold text-amber-300">
-                ❤️ {photo.votes_count}
+                {photo.votes_count} votes
               </span>
             )}
           </div>
@@ -86,15 +86,14 @@ function PhotoCard({
 
         {isWinner && (
           <div className="absolute left-2 top-2">
-            <Badge variant="warning">🏆 Gagnant</Badge>
+            <Badge variant="warning">Gagnant</Badge>
           </div>
         )}
       </div>
 
-      {/* Individual theme label shown after reveal */}
       {individualTheme && (
         <p className="rounded-lg bg-violet-50 px-2 py-1 text-xs text-violet-700 italic leading-snug">
-          &ldquo;{individualTheme}&rdquo;
+          {individualTheme}
         </p>
       )}
     </div>

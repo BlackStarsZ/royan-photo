@@ -16,5 +16,5 @@ if (!supabaseUrl || !supabaseAnonKey) {
  * Use in Client Components only.
  */
 export function createClient() {
-  return createBrowserClient<Database>(supabaseUrl, supabaseAnonKey);
+  return createBrowserClient<Database>(supabaseUrl!, supabaseAnonKey!);
 }

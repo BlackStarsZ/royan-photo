@@ -29,7 +29,7 @@ export default function CreateGamePage() {
       gameName,
       pseudo,
       gameMode,
-      challengeTime: gameMode === 'daily' ? challengeTime : undefined,
+      ...(gameMode === 'daily' ? { challengeTime } : {}),
     });
 
     setLoading(false);
