@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 
+import { AutoRefresh } from '@/components/ui/AutoRefresh';
 import { getSession } from '@/lib/actions/auth';
 import { ChallengeService } from '@/lib/services/ChallengeService';
 import { PhotoService } from '@/lib/services/PhotoService';
@@ -67,11 +68,14 @@ export default async function UploadPage({ params }: PageProps) {
   }
 
   return (
-    <UploadClient
+    <>
+      <AutoRefresh intervalMs={15000} />
+      <UploadClient
       challengeId={challenge.id}
       challengeText={themeText}
       isIndividual={challenge.individual_themes}
       gameCode={code}
     />
+    </>
   );
 }

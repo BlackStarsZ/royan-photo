@@ -11,6 +11,7 @@ import { getSession } from '@/lib/actions/auth';
 import { ChallengeService } from '@/lib/services/ChallengeService';
 import { GameService } from '@/lib/services/GameService';
 import { ParticipantService } from '@/lib/services/ParticipantService';
+import { AutoRefresh } from '@/components/ui/AutoRefresh';
 import { InviteButton } from './InviteButton';
 
 interface PageProps {
@@ -42,6 +43,7 @@ export default async function GameDashboardPage({ params }: PageProps) {
 
   return (
     <div className="flex flex-col gap-4">
+      <AutoRefresh intervalMs={10000} />
       {/* Invite card */}
       <Card className="flex items-center justify-between">
         <div>

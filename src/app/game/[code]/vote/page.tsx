@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 
 import { VotePageClient } from './VotePageClient';
+import { AutoRefresh } from '@/components/ui/AutoRefresh';
 import { getSession } from '@/lib/actions/auth';
 import { ChallengeService } from '@/lib/services/ChallengeService';
 import { PhotoService } from '@/lib/services/PhotoService';
@@ -36,7 +37,9 @@ export default async function VotePage({ params }: PageProps) {
   const votablePhotos = photos.filter((p) => p.participant_id !== session.participantId);
 
   return (
-    <VotePageClient
+    <>
+      <AutoRefresh intervalMs={10000} />
+      <VotePageClient
       challengeId={challenge.id}
       challengeText={challenge.theme_text}
       gameCode={code}
@@ -44,5 +47,6 @@ export default async function VotePage({ params }: PageProps) {
       initialVotePhotoId={existingVote?.photo_id ?? null}
       challengeStatus={challenge.status}
     />
+    </>
   );
 }
